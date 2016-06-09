@@ -1,6 +1,7 @@
 'use strict';
 
 var server = require('./config/initializers/socket');
+var database = require('./config/initializers/database');
 var nconf = require('nconf');
 var async = require('async');
 var logger = require('winston');
@@ -19,8 +20,11 @@ logger.info('[APP] Starting server initialization');
 
 // Initialize Modules
 async.waterfall([
-  function startServer(callback) {
-    server(callback);
+  function initializeDBConnection(callback) {
+    database(callback);
+  },
+  function startServer(db, callback) {
+    server(db, callback);
   }], function(err, results) {
     if(err) {
       logger.error('[APP] initialization failed', err);
