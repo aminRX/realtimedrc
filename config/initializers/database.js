@@ -1,9 +1,10 @@
 'use strict';
 
-var logger = require('winston');
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
+const logger = require('winston');
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const r = require('rethinkdb');
 
 var start = function(cb) {
   var mysql      = require('mysql');
@@ -24,6 +25,11 @@ var start = function(cb) {
 
   };
 
+  var connection = null;
+  r.connect({host: 'localhost', port: 28015}, function(err, conn) {
+    if(err) throw err;
+    connection = conn;
+  });
   const db = {
     findUserByToken: findUserByToken
   };

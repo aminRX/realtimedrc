@@ -4,7 +4,6 @@
 const redis = require('redis');
 module.exports = function(namespace) {
 
-  const store = redis.createClient();
   const sub = redis.createClient();
   sub.subscribe('request_to_doctors');
 
@@ -28,4 +27,5 @@ module.exports = function(namespace) {
     });
 
   });
+
 };
